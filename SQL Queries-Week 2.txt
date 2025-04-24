@@ -1,0 +1,74 @@
+SQL Questions -> For Relational Analysis & Aggregation
+1. Sales & Profit Analysis
+
+• What is the total sales and profit per year?
+Select YEAR(o.OrderDate) As Year, 
+SUM(od.Sales) AS Total_Sales, 
+SUM(od.Profit) AS Total_Profit
+From Orders o
+Join OrderDetails od ON o.OrderID = od.OrderID
+Group By YEAR(o.OrderDate)
+Order By Year;
+
+• Which Customer has made the highest total purchases?
+Select c.CustomerName, SUM(od.Sales) AS Total_Purchases
+From Customers c
+Join Orders o ON c.CustomerID = o.CustomerID
+Join OrderDetails od ON o.OrderID = od.OrderID
+Group By c.CustomerName
+Order By Total_Purchases Desc
+Limit 1;
+
+• Which product category generates the most revenue?
+Select p.Category, SUM(od.Sales) AS Total_Revenue
+From OrderDetails od
+Join Products p ON od.ProductID = p.ProductID
+Group By p.Category
+Order By Total_Revenue Desc
+Limit 1;
+
+2. Shipping & Delivery Insights
+
+• What is the average shipping time(difference between OrderDate and ShipDate) for each Ship mode?
+Select s.ShipMode, AVG (DateDiff (s.ShipDate, o.OrderDate)) As Average_Shipping_Time
+From Shipments s
+Join Orders o ON s.OrderID=o.OrderID
+Group By s.ShipMode;
+
+• Which region has the fastest and slowest average shipping times?
+Select c.Region, AVG (DateDiff (s.ShipDate, o.OrderDate)) AS Average_Shipping_Time
+From Shipments s
+Join Orders o ON s.OrderID = o.OrderID
+Join Customers c ON o.CustomerID = c.CustomerID
+Group By c.Region
+Order By AvgShippingTime;
+
+• How many orders were shipped using each Ship mode?
+Select ShipMode, Count(OrderID) AS Number_Of_Orders
+From Shipments 
+Group By ShipMode;
+
+3. Customers & Location Trends
+
+
+• What are the top 5 cities with the highest number of orders?
+Select c.City, Count(o.OrderID) As Total_Orders
+From Customers c
+Join Orders o ON c.CustomersID=o.CustomersID
+Group By c.City
+Order By Total_Orders Desc
+Limit 5; 
+
+• Which state has the highest total profit?
+Select c.State, Sum(od.Profit) As Total_Profit
+From Customers c
+Join Orders o ON c.CusomersID=o.CustomersID
+Join OrderDetails od ON o.OrderID=od.OrderID
+Group By c.State
+Order By Total_Profit Desc
+Limit 1;
+
+• What percentage of customers belong to each segment (Consumer, Corporate and Home Office)?
+Select Segment, (Count(Distinct CustomerID) * 100.0) As Percentage of customers
+From Customers
+Group By Segment;
