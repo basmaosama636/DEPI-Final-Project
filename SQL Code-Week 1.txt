@@ -1,0 +1,18 @@
+   -- Table for Customers
+CREATE TABLE Customers ( CustomerID VARCHAR(255) PRIMARY KEY, CustmoerName VARCHAR(255),Segment VARCHAR(255),
+ Country VARCHAR(255), State VARCHAR(255), City VARCHAR(255), Region VARCHAR(255), PostalCode VARCHAR(255));
+
+ -- Table for Orders
+CREATE TABLE Orders ( OrderID VARCHAR(255) PRIMARY KEY, OrderDate DATETIME, CustomerID  VARCHAR(255),
+ FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID));
+
+ -- Table for OrderDetails
+CREATE TABLE OrderDetails( RowID INT PRIMARY KEY, Quantity INT, Profit DECIMAL, Sales DECIMAL,  
+Discount DECIMAL, OrderID VARCHAR(255), ProductID VARCHAR(255), FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+FOREIGN KEY (OrderID) REFERENCES Orders(OrderID));
+
+ -- Table for Products
+CREATE TABLE Products( ProductID VARCHAR(255) PRIMARY KEY, ProductName VARCHAR(255), Category VARCHAR(255), Sub-Category VARCHAR(255));
+
+ -- Table for Shipments
+CREATE TABLE Shipments( ShipID INT PRIMARY KEY,    ShipDate DATETIME,ShipMode VARCHAR(255), OrderID VARCHAR(255), FOREIGN KEY (OrderID) REFERENCES Orders(OrderID));
